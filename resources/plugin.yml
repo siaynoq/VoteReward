@@ -1,0 +1,9 @@
+name: VoteReward
+version: 1.0.0
+main: com.tregele.bukkit.votereward.VoteReward
+commands:
+    votereward:
+        description: Simulates the vote reward.
+        usage: /<command> [player]
+        permission: votereward.command
+        permission-message: You don't have permission to execute this operation

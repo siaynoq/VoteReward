@@ -1,0 +1,39 @@
+#defining groups ie. permission nodes
+groups:
+    - normal:
+        - name: Some dirt
+          chance: 50
+          type: item
+          data_value: 266
+          amount: 1-5
+        - name: Grand prize
+          chance: 50
+          type: item
+          data_value: 265
+          amount: 1
+        - name: Some experience
+          chance: 10
+          type: xp
+          amount: 20-50
+        - name: Nothing ^^
+          chance: 39
+          type: nothing
+    - enhanced:
+        - name: Some dirt
+          chance: 10
+          type: item
+          data_value: 266
+          amount: 1-10
+        - name: Bunch of things
+          chance: 10
+          type: multiple_items
+          data_value:
+              - 266
+              - 245
+          #amount: 1 <- this is the default
+        - name: Grand prize
+          chance: 50
+          type: item
+          data_value: 265
+          amount: 1-2
+
