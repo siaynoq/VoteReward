@@ -1,7 +1,7 @@
 name: VoteReward
 version: 0.2.0
 main: com.tregele.bukkit.votereward.VoteReward
-authors: Siaynoq
+authors: [Siaynoq]
 commands:
     votereward:
         description: Simulates the vote reward.
