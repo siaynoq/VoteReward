@@ -26,7 +26,7 @@ public class VoteReward extends JavaPlugin {
 
     private Random random = new Random();
 
-    private ArrayList<RewardGroup> rewardGroups = new ArrayList<RewardGroup>();
+    private ArrayList<RewardGroup> rewardGroups;
 
     public void onEnable() {
 
@@ -47,6 +47,9 @@ public class VoteReward extends JavaPlugin {
     }
 
     public void readConfig() {
+
+        rewardGroups = new ArrayList<RewardGroup>();
+
         FileConfiguration fc = this.getConfig();
 
         for (Object groupListObject : fc.getList("groups")) {
@@ -131,7 +134,7 @@ public class VoteReward extends JavaPlugin {
                     /**
                      * Reward Type: 'nothing'
                      */
-                    else if(rewardType.equals("nothing")) {
+                    else if (rewardType.equals("nothing")) {
                         NoReward noReward = new NoReward();
 
                         noReward.setName((String) reward.get("name"));
@@ -144,14 +147,15 @@ public class VoteReward extends JavaPlugin {
                         multipleItemsReward.setName((String) reward.get("name"));
                         multipleItemsReward.setChance((Integer) reward.get("chance"));
 
-                    }*/ else {
+                    }*/
+                    else {
                         //error
                     }
 
                 }
 
                 rewardGroups.add(rewardGroup);
-                log.info("Added reward group: " + rewardGroup.getName() + " with " + rewardGroup.getRewardListSize() + " rewards" );
+                log.info("Added reward group: " + rewardGroup.getName() + " with " + rewardGroup.getRewardListSize() + " rewards");
             }
 
         }
@@ -177,16 +181,17 @@ public class VoteReward extends JavaPlugin {
         boolean retVal = false;
 
         if (cmd.getName().equalsIgnoreCase("votereward")) {
-
-            PermissionUser pexUser = PermissionsEx.getUser(sender.getName());
-            if (pexUser.has("votereward.command")) {
-                if (args.length == 1) {
-                    log.info("Manually activating votereward for " + args[0]);
-                    sender.sendMessage("Reward sent to " + args[0] + ": " + voteReward(args[0]));
-                }
+            if (args.length == 1) {
+                log.info("Manually activating votereward for " + args[0]);
+                sender.sendMessage("Reward sent to " + args[0] + ": " + voteReward(args[0]));
             } else {
-                sender.sendMessage("You don't have permission for this.");
+                sender.sendMessage("Specify target player");
             }
+
+            retVal = true;
+        } else if (cmd.getName().equalsIgnoreCase("vrreload")) {
+            readConfig();
+            sender.sendMessage("VoteReward config reloaded.");
             retVal = true;
         }
 
