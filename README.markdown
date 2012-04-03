@@ -1,4 +1,4 @@
-# VoteReward v0.2.0
+# VoteReward v0.3.0
 
  VoteReward is a plugin for Bukkit Minecraft Servers.
  It rewards selected members of the community who vote on any of the servers which supports [Votifier](https://github.com/vexsoftware/votifier).
