@@ -3,13 +3,6 @@ package com.tregele.bukkit.votereward.rewards;
 import java.util.HashMap;
 import java.util.Random;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Siaynoq
- * Date: 24/03/12
- * Time: 18:57
- * To change this template use File | Settings | File Templates.
- */
 public class RewardGroup {
 
     public String getName() {
@@ -18,10 +11,6 @@ public class RewardGroup {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    private HashMap<Integer, Reward> getRewardList() {
-        return rewardList;
     }
 
     public void addReward(Reward reward) {
@@ -42,7 +31,7 @@ public class RewardGroup {
         int currentRoll = random.nextInt(totalChance);
 
         for(Integer chance : rewardList.keySet()) {
-            if((currentRoll > chance) && (currentRoll < (chance + rewardList.get(chance).getChance()))) {
+            if((currentRoll >= chance) && (currentRoll < (chance + rewardList.get(chance).getChance()))) {
                 return rewardList.get(chance);
             }
         }
