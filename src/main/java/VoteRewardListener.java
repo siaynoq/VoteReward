@@ -43,7 +43,7 @@ public class VoteRewardListener implements VoteListener {
         try {
 
             Connection conn =
-                    DriverManager.getConnection("jdbc:sqlite:votes.db");
+                    DriverManager.getConnection("jdbc:sqlite:plugins/Votifier/votes.db");
             Statement stat = conn.createStatement();
             stat.executeUpdate("CREATE TABLE IF NOT EXISTS vote (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "username TEXT," +
