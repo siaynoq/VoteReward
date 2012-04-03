@@ -1,4 +1,4 @@
-# VoteReward v0.3.0
+# VoteReward v0.3.1
 
  VoteReward is a plugin for Bukkit Minecraft Servers.
  It rewards selected members of the community who vote on any of the servers which supports [Votifier](https://github.com/vexsoftware/votifier).
@@ -112,6 +112,12 @@ VoteReward was tested and compiled with:
 
 # Release history
 
+ - 0.3.1 - bugfix release
+     - bugfixes
+         - now "nothing" item type is really added to reward group - 03/04/2012
+         - redesigned config.yml reading for error cases
+     - changed features:
+         - changed <code>votes.db</code> SQLite directory file to <code>plugins/Votifier</code>
  - 0.3.0 - still beta - 03/04/2012
      - New features:
          - added configurable message to player
