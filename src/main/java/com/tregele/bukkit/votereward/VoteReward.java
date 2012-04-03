@@ -5,7 +5,8 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,15 +14,19 @@ import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class VoteReward extends JavaPlugin {
 
     Logger log;
+
+    final static String configFileName = "config.yml";
 
     static VoteReward instance;
 
@@ -35,24 +40,39 @@ public class VoteReward extends JavaPlugin {
         log = this.getLogger();
         //check if config exists
 
-        File configFile = new File(getDataFolder() + "/config.yml");
+        File configFile = new File(getDataFolder(), configFileName);
         if (!configFile.exists()) {
             //save default config
             this.saveDefaultConfig();
             log.warning("WARNING: VoteReward default config is copied to its folder. Modify it!");
         }
 
-        readConfig();
+        this.getConfig().options().copyDefaults(false);
 
-        log.info("VoteReward plugin enabled successfully.");
-        instance = this;
+        if (readConfig()) {
+            log.info("VoteReward plugin enabled successfully.");
+            instance = this;
+        } else {
+            log.warning("Error while loading configuration, VoteReward plugin is NOT enabled.");
+        }
+
     }
 
-    public void readConfig() {
+
+    public boolean readConfig() {
 
         rewardGroups = new ArrayList<RewardGroup>();
 
-        FileConfiguration fc = this.getConfig();
+        YamlConfiguration fc = new YamlConfiguration();
+        try {
+            fc.load(getDataFolder() + "/" + configFileName);
+        } catch (IOException e) {
+            log.log(Level.WARNING, "Cannot open " + getDataFolder() + "/" + configFileName, e);
+            return false;
+        } catch (InvalidConfigurationException e) {
+            log.log(Level.WARNING, "Cannot load " + getDataFolder() + "/" + configFileName, e);
+            return false;
+        }
 
         //reading messages
         messages = fc.getStringList("messages");
@@ -68,6 +88,9 @@ public class VoteReward extends JavaPlugin {
                 rewardGroup.setName(groupName);
                 ArrayList<LinkedHashMap<String, Object>> rewardList = groupList.get(groupName);
                 for (LinkedHashMap<String, Object> reward : rewardList) {
+
+                    Reward rewardToAdd = null;
+
                     String rewardType = (String) reward.get("type");
                     //TODO extract to RewardFactory
                     /**
@@ -101,7 +124,8 @@ public class VoteReward extends JavaPlugin {
                         itemReward.setAmountMin(minAmount);
                         itemReward.setAmountMax(maxAmount);
 
-                        rewardGroup.addReward(itemReward);
+                        rewardToAdd = itemReward;
+
 
                     }
                     /**
@@ -134,7 +158,8 @@ public class VoteReward extends JavaPlugin {
                         xpReward.setAmountMax(maxAmount);
                         xpReward.setAmountMin(minAmount);
 
-                        rewardGroup.addReward(xpReward);
+                        rewardToAdd = xpReward;
+
 
                     }
                     /**
@@ -145,6 +170,8 @@ public class VoteReward extends JavaPlugin {
 
                         noReward.setName((String) reward.get("name"));
                         noReward.setChance((Integer) reward.get("chance"));
+
+                        rewardToAdd = noReward;
                     }
 
                     /*else if(rewardType.equals("multiple_items")) {
@@ -155,9 +182,12 @@ public class VoteReward extends JavaPlugin {
 
                     }*/
                     else {
-                        //error
+                        log.severe("Error in config: '" + rewardType + "' is not a valid reward type");
                     }
 
+                    if (rewardToAdd != null) {
+                        rewardGroup.addReward(rewardToAdd);
+                    }
                 }
 
                 rewardGroups.add(rewardGroup);
@@ -167,6 +197,8 @@ public class VoteReward extends JavaPlugin {
         }
 
         log.info("Read from config: " + rewardGroups.size() + " groups");
+
+        return true;
 
     }
 
@@ -196,7 +228,7 @@ public class VoteReward extends JavaPlugin {
 
             retVal = true;
         } else if (cmd.getName().equalsIgnoreCase("vrreload")) {
-            this.reloadConfig();
+
             readConfig();
             sender.sendMessage("VoteReward config reloaded.");
             retVal = true;
@@ -223,7 +255,7 @@ public class VoteReward extends JavaPlugin {
 
                     sendMessages(targetPlayer, reward);
 
-                    status = "Selected reward for " + targetPlayer + ": " + reward.toString() + " - Rolled amount: " + roll;
+                    status = "Selected reward for " + targetPlayer.getName() + ": " + reward.toString() + " - Rolled amount: " + roll;
                 }
             }
         }
