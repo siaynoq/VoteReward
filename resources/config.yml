@@ -26,16 +26,16 @@ groups:
           type: item
           data_value: 266
           amount: 1-10
-        - name: Bunch of things
-          chance: 10
-          type: multiple_items
-          data_value:
-              - 266
-              - 245
-          #amount: 1 <- this is the default
+#Future dev.
+#        - name: Bunch of things
+#          chance: 10
+#          type: multiple_items
+#          data_value:
+#              - 266
+#              - 245
+#          #amount: 1 <- this is the default
         - name: Grand prize
           chance: 50
           type: item
           data_value: 265
           amount: 1-2
-
