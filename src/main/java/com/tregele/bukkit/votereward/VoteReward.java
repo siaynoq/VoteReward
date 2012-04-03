@@ -15,6 +15,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -26,6 +27,7 @@ public class VoteReward extends JavaPlugin {
 
     private Random random = new Random();
 
+    private List<String> messages;
     private ArrayList<RewardGroup> rewardGroups;
 
     public void onEnable() {
@@ -52,6 +54,10 @@ public class VoteReward extends JavaPlugin {
 
         FileConfiguration fc = this.getConfig();
 
+        //reading messages
+        messages = fc.getStringList("messages");
+
+        //reading reward groups
         for (Object groupListObject : fc.getList("groups")) {
 
             LinkedHashMap<String, ArrayList<LinkedHashMap<String, Object>>> groupList =
@@ -190,6 +196,7 @@ public class VoteReward extends JavaPlugin {
 
             retVal = true;
         } else if (cmd.getName().equalsIgnoreCase("vrreload")) {
+            this.reloadConfig();
             readConfig();
             sender.sendMessage("VoteReward config reloaded.");
             retVal = true;
@@ -213,9 +220,9 @@ public class VoteReward extends JavaPlugin {
                 if (pexUser.has("votereward." + rg.getName())) {
                     reward = rg.rollReward(random);
                     int roll = reward.doAction(targetPlayer, random);
-                    targetPlayer.sendMessage("You successfully voted for this server!");
-                    targetPlayer.sendMessage("You received a surprise: " + reward.getName());
-                    targetPlayer.sendMessage("Vote again tomorrow :)");
+
+                    sendMessages(targetPlayer, reward);
+
                     status = "Selected reward for " + targetPlayer + ": " + reward.toString() + " - Rolled amount: " + roll;
                 }
             }
@@ -224,5 +231,15 @@ public class VoteReward extends JavaPlugin {
         log.info(status);
         return status;
 
+    }
+
+    private void sendMessages(Player targetPlayer, Reward reward) {
+        for (String m : messages) {
+            targetPlayer.sendMessage(convertMessage(m, reward));
+        }
+    }
+
+    private String convertMessage(String message, Reward reward) {
+        return message.replace("{name}", reward.getName());
     }
 }
