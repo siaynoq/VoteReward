@@ -37,6 +37,7 @@ VoteReward was tested and compiled with:
 
  Sample <code>config.yml</code>:
 
+    messages: ["Successfully voted!", "Item won: {name}"]
     groups:
         - normal:
             - name: A wooden axe
@@ -68,6 +69,9 @@ VoteReward was tested and compiled with:
               type: item
               data_value: 265
               amount: 1-2
+
+ First, you can set what message(s) the user will see after getting the reward. You can use Bukkit chat color codes by prefixing it with <code>\u00A7</code>.
+ E.g. <code>\u00A7aHey</code> is 'Hey' all in green.
 
  Here we have two groups defined - "normal" and "vip". The "items" underneath are the rewards for each group.
  You have to assign the VoteReward group to the group/player in your permissions.yml with the prefix "votereward" (e.g. "votereward.normal")
@@ -105,5 +109,16 @@ VoteReward was tested and compiled with:
 ### <code>/vrreload</code>
 
  Reloads <code>VoteReward/config.yml</code> file to memory.
+
+# Release history
+
+ - 0.3.0 - still beta - 03/04/2012
+     - New features:
+         - added configurable message to player
+     - bugfixes:
+         - sporadic NullPointer exception while rolling reward
+         - config reload (<code>/vrreload</code>) now correctly reloads from disk
+ - 0.2.0 - still beta, first public release - 01/04/2012
+ - 0.1.0 - beta, not really proud of it, so it's not really released
 
 
