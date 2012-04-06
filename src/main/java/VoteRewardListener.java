@@ -49,11 +49,11 @@ public class VoteRewardListener implements VoteListener {
                     "username TEXT," +
                     "servicename TEXT," +
                     "address TEXT," +
-                    "external_timestamp TEXT," +
-                    "timestamp TEXT);");
+                    "external_timestamp INTEGER," +
+                    "timestamp INTEGER);");
 
             PreparedStatement prep = conn.prepareStatement("INSERT INTO vote (username, servicename, address, external_timestamp, timestamp) VALUES " +
-                    "(?, ?, ?, ?, date('now'));");
+                    "(?, ?, ?, ?, datetime('now'));");
 
             prep.setString(1, vote.getUsername());
             prep.setString(2, vote.getServiceName());
@@ -66,7 +66,7 @@ public class VoteRewardListener implements VoteListener {
             conn.setAutoCommit(true);
 
             ResultSet rs = stat.executeQuery("SELECT COUNT(*) FROM vote WHERE username='" + vote.getUsername() + "' " +
-                    "AND date(external_timestamp)>date(" + timestampInt + 86400 + ");");
+                    "AND date(external_timestamp, 'unixepoch')=date(" + timestampInt + ", 'unixepoch')");
 
             if (rs.next()) {
                 numberOfVotesToday = rs.getInt(1);
