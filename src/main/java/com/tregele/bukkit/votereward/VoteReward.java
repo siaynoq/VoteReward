@@ -53,7 +53,7 @@ public class VoteReward extends JavaPlugin {
             log.info("VoteReward plugin enabled successfully.");
             instance = this;
         } else {
-            log.warning("Error while loading configuration, VoteReward plugin is NOT enabled.");
+            log.warning("Error while loading configuration, VoteReward plugin is NOT enabled. Correct config and reload plugin(s).");
         }
 
     }
@@ -76,6 +76,11 @@ public class VoteReward extends JavaPlugin {
 
         //reading messages
         messages = fc.getStringList("messages");
+
+        if(fc.getList("groups") == null) {
+            log.severe("'groups' entry could not be found in configuration, aborting.");
+            return false;
+        }
 
         //reading reward groups
         for (Object groupListObject : fc.getList("groups")) {
