@@ -11,7 +11,7 @@
 
 VoteReward was tested and compiled with:
 
-- CraftBukkit 1.2.4-R1.0
+- CraftBukkit 1.2.5-R1.0
 - Votifier 1.16
 - PermissionsEx 1.19.1
 
@@ -112,6 +112,10 @@ VoteReward was tested and compiled with:
 
 # Release history
 
+ - 0.3.2 - bugfix release
+     - bugfixes
+         - major bug: votes were considered as "same day" even though they were clearly not
+         - added config check if "groups" are missing (to avoid exception)
  - 0.3.1 - bugfix release
      - bugfixes
          - now "nothing" item type is really added to reward group - 03/04/2012
