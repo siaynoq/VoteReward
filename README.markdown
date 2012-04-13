@@ -1,4 +1,4 @@
-# VoteReward v0.3.1
+# VoteReward v0.3.3
 
  VoteReward is a plugin for Bukkit Minecraft Servers.
  It rewards selected members of the community who vote on any of the servers which supports [Votifier](https://github.com/vexsoftware/votifier).
@@ -45,6 +45,11 @@ VoteReward was tested and compiled with:
               type: item
               data_value: 271
               amount: 1-5
+            - name: Brown wool!
+              chance: 2
+              type: item
+              data_value: 35;12
+              amount: 1-3
             - name: Grand prize!
               chance: 50
               type: item
@@ -86,7 +91,7 @@ VoteReward was tested and compiled with:
  Current "types" of rewards:
 
  - item: an ingame item
-     - 'data_value' is the ingame decimal value for the item.
+     - 'data_value' is the ingame decimal value for the item. You can give "subitem value" with a semicolon (;). Example: <code>data_value: 35;12</code> is brown wool
      - 'amount' is a fix number or an interval of points which will be given. '1' if not defined.
  - xp: experience points
      - 'amount' is a fix number or an interval of points which will be given. '1' if not defined.
@@ -112,6 +117,12 @@ VoteReward was tested and compiled with:
 
 # Release history
 
+ - 0.3.3 - still beta - 14/04/2012
+      - added feature:
+          - now you are able to define "subitem data" for Item reward. E.g.: <code>data_value: 35;12</code> is brown wool
+      - other:
+          - code refactor
+          - added config read error handling
  - 0.3.2 - bugfix release
      - bugfixes
          - major bug: votes were considered as "same day" even though they were clearly not
