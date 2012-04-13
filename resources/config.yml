@@ -3,10 +3,10 @@ messages: ["You successfully voted for this server!", "You received a surprise: 
 #defining groups ie. permission nodes
 groups:
     - normal:
-        - name: Some dirt
+        - name: Wool
           chance: 50
           type: item
-          data_value: 266
+          data_value: 35;12
           amount: 1-5
         - name: Grand prize
           chance: 50
