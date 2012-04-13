@@ -44,7 +44,6 @@ public class VoteReward extends JavaPlugin {
         this.getConfig().options().copyDefaults(false);
 
 
-
         if (readConfig()) {
             log.info("VoteReward plugin enabled successfully.");
             instance = this;
@@ -81,8 +80,9 @@ public class VoteReward extends JavaPlugin {
             retVal = true;
         } else if (cmd.getName().equalsIgnoreCase("vrreload")) {
 
-            readConfig();
-            sender.sendMessage("VoteReward config reloaded.");
+            if (readConfig()) {
+                sender.sendMessage("VoteReward config reloaded.");
+            }
             retVal = true;
         }
 
@@ -109,7 +109,7 @@ public class VoteReward extends JavaPlugin {
             return false;
         }
 
-        for(RewardGroup group : configuration.getRewardGroups()) {
+        for (RewardGroup group : configuration.getRewardGroups()) {
             log.info("Added reward group: " + group.getName() + " with " + group.getRewardListSize() + " rewards");
         }
 
