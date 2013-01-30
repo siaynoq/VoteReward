@@ -1,4 +1,4 @@
-# VoteReward v0.3.3
+# VoteReward v0.4.0
 
  VoteReward is a plugin for Bukkit Minecraft Servers.
  It rewards selected members of the community who vote on any of the servers which supports [Votifier](https://github.com/vexsoftware/votifier).
@@ -11,7 +11,7 @@
 
 VoteReward was tested and compiled with:
 
-- CraftBukkit 1.2.5-R1.0
+- CraftBukkit 1.4.7-R0.1
 - Votifier 1.16
 - PermissionsEx 1.19.1
 
@@ -40,6 +40,10 @@ VoteReward was tested and compiled with:
     messages: ["Successfully voted!", "Item won: {name}"]
     groups:
         - normal:
+            - always: Green Gold
+              type: item
+              data_value: 364
+              amount: 5-10
             - name: A wooden axe
               chance: 50
               type: item
@@ -86,6 +90,7 @@ VoteReward was tested and compiled with:
 
  - Common properties:
     - name: the "description" the user will see when (s)he gets this reward.
+      - always: if the "name" is specified with the key "always", the defined reward is ALWAYS given (this doesn't affect random rewards). "chance" in this case is not considered obviously.
     - chance: numeric value, which represents the chance this reward is selected. Sum of chances doesn't have to be '100'.
 
  Current "types" of rewards:
@@ -116,6 +121,10 @@ VoteReward was tested and compiled with:
  Reloads <code>VoteReward/config.yml</code> file to memory.
 
 # Release history
+
+ - 0.4.0 - still beta - 30/01/2013
+      - added feature:
+          - you can define "always" reward(s), which is/are given on top of the random roll
 
  - 0.3.3 - still beta - 14/04/2012
       - added feature:
