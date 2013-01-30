@@ -1,7 +1,6 @@
 package com.tregele.bukkit.votereward.rewards;
 
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class RewardGroup {
 
@@ -18,8 +17,17 @@ public class RewardGroup {
         totalChance += reward.getChance();
     }
 
+    public void addAlwaysReward(Reward reward) {
+        alwaysRewardList.add(reward);
+    }
+
+    public List<Reward> getAlwaysRewardList() {
+        return this.alwaysRewardList;
+    }
+
     private String name;
-    private HashMap<Integer, Reward> rewardList = new HashMap<Integer, Reward>();
+    private Map<Integer, Reward> rewardList = new HashMap<Integer, Reward>();
+    private List<Reward> alwaysRewardList = new ArrayList<Reward>();
     private int totalChance = 0;
 
     public int getRewardListSize() {

@@ -3,12 +3,18 @@ package com.tregele.bukkit.votereward.rewards;
 import java.util.LinkedHashMap;
 
 public abstract class RewardBase implements Reward {
-    
+
     private int chance;
 
     public RewardBase(LinkedHashMap<String, Object> reward) {
-        this.setName((String) reward.get("name"));
-        this.setChance((Integer) reward.get("chance"));
+        if (!reward.containsKey("always")) {
+            this.setName((String) reward.get("name"));
+            this.setChance((Integer) reward.get("chance"));
+        } else {
+            this.setName((String) reward.get("always"));
+            this.setChance(100);
+        }
+
     }
 
     public int getChance() {

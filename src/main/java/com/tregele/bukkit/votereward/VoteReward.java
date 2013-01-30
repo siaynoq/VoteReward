@@ -1,6 +1,8 @@
 package com.tregele.bukkit.votereward;
 
-import com.tregele.bukkit.votereward.rewards.*;
+import com.tregele.bukkit.votereward.rewards.Reward;
+import com.tregele.bukkit.votereward.rewards.RewardGroup;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,6 +15,8 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,7 +76,7 @@ public class VoteReward extends JavaPlugin {
         if (cmd.getName().equalsIgnoreCase("votereward")) {
             if (args.length == 1) {
                 log.info("Manually activating votereward for " + args[0]);
-                sender.sendMessage("Reward sent to " + args[0] + ": " + voteReward(args[0]));
+                sender.sendMessage(voteReward(args[0]));
             } else {
                 sender.sendMessage("Specify target player");
             }
@@ -110,7 +114,7 @@ public class VoteReward extends JavaPlugin {
         }
 
         for (RewardGroup group : configuration.getRewardGroups()) {
-            log.info("Added reward group: " + group.getName() + " with " + group.getRewardListSize() + " rewards");
+            log.info("Added reward group: " + group.getName() + " with " + group.getRewardListSize() + " rewards (+" + group.getAlwaysRewardList().size() + " fix rewards)");
         }
 
         return true;
@@ -120,7 +124,7 @@ public class VoteReward extends JavaPlugin {
     public String voteReward(String targetPlayerName) {
 
         String status = "Unexpected action...";
-        Reward reward;
+        List<Reward> rewardList = new ArrayList<Reward>();
         Player targetPlayer = Bukkit.getServer().getPlayerExact(targetPlayerName);
 
         if (targetPlayer == null) {
@@ -130,12 +134,16 @@ public class VoteReward extends JavaPlugin {
             PermissionUser pexUser = PermissionsEx.getUser(targetPlayer.getName());
             for (RewardGroup rg : configuration.getRewardGroups()) {
                 if (pexUser.has("votereward." + rg.getName())) {
-                    reward = rg.rollReward(random);
-                    int roll = reward.doAction(targetPlayer, random);
 
-                    sendMessages(targetPlayer, reward);
+                    for (Reward reward : rg.getAlwaysRewardList()) {
+                        rewardList.add(reward);
+                    }
 
-                    status = "Selected reward for " + targetPlayer.getName() + ": " + reward.toString() + " - Rolled amount: " + roll;
+                    Reward randomReward = rg.rollReward(random);
+                    rewardList.add(randomReward);
+
+                    status = doActionAndSendMessages(targetPlayer, rewardList);
+
                 }
             }
         }
@@ -145,13 +153,23 @@ public class VoteReward extends JavaPlugin {
 
     }
 
-    private void sendMessages(Player targetPlayer, Reward reward) {
-        for (String m : configuration.getMessages()) {
-            targetPlayer.sendMessage(convertMessage(m, reward));
+    private String doActionAndSendMessages(Player targetPlayer, List<Reward> rewardList) {
+        String logText = "";
+        List<String> rewardNames = new ArrayList<String>();
+        for (Reward reward : rewardList) {
+            int roll = reward.doAction(targetPlayer, random);
+            rewardNames.add(reward.getName());
+            logText += "Selected reward for " + targetPlayer.getName() + ": " + reward.toString() + " - Rolled amount: " + roll + "\n";
         }
+
+        for (String m : configuration.getMessages()) {
+            targetPlayer.sendMessage(convertMessage(m, rewardNames));
+        }
+        return logText;
     }
 
-    private String convertMessage(String message, Reward reward) {
-        return message.replace("{name}", reward.getName());
+    private String convertMessage(String message, List<String> rewardList) {
+        //TODO optimise not to do .join all the time
+        return message.replace("{name}", StringUtils.join(rewardList, ", "));
     }
 }

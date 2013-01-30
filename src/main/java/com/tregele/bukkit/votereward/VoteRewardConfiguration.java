@@ -83,7 +83,12 @@ public class VoteRewardConfiguration {
                         throw new ConfigurationException("Error in config: '" + rewardType + "' is not a valid reward type");
                     }
 
-                    rewardGroup.addReward(rewardToAdd);
+                    if(reward.containsKey("always")) {
+                        rewardGroup.addAlwaysReward(rewardToAdd);
+                    } else {
+                        rewardGroup.addReward(rewardToAdd);
+                    }
+
 
                 }
 
