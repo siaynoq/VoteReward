@@ -1,5 +1,5 @@
 #messages sent to user, use \u00A7 prefix for color codes. e.g. \u00A7a for green
-messages: ["You successfully voted for this server!", "You received a surprise: {name}", "Vote again tomorrow!"]
+messages: ["You successfully voted for this server!", "You received some surprise: {name}", "Vote again tomorrow!"]
 #defining groups ie. permission nodes
 groups:
     - normal:
