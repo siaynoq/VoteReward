@@ -2,6 +2,7 @@ package com.tregele.bukkit.votereward.rewards;
 
 import com.tregele.bukkit.votereward.ConfigurationException;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -43,15 +44,22 @@ public class ItemReward extends RewardBase {
             itemToSet = new ItemStack((Integer) reward.get("data_value"));
         } else {
             //String
-            String[] itemData = StringUtils.split((String) reward.get("data_value"), ";");
-            if (itemData.length != 2) {
-                throw new ConfigurationException("Item data is not in 123;12 format: " + reward.get("data_value"));
+            Material material = Material.getMaterial((String) reward.get("data_value"));
+            if (material == null) {
+                //material is not defined by name, expecting ID(+sub)
+                String[] itemData = StringUtils.split((String) reward.get("data_value"), ";");
+                if (itemData.length != 2) {
+                    throw new ConfigurationException("Item data is not in 123;12 format: " + reward.get("data_value"));
+                }
+                try {
+                    itemToSet = new ItemStack(Integer.parseInt(itemData[0]), 1, Short.parseShort(itemData[1]));
+                } catch (NumberFormatException e) {
+                    throw new ConfigurationException("Item data is not in 123;12 format", e);
+                }
+            } else {
+                itemToSet = new ItemStack(material.getId());
             }
-            try {
-                itemToSet = new ItemStack(Integer.parseInt(itemData[0]), 1, Short.parseShort(itemData[1]));
-            } catch (NumberFormatException e) {
-                throw new ConfigurationException("Item data is not in 123;12 format", e);
-            }
+
         }
 
 
