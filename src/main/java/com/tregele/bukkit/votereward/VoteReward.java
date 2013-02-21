@@ -128,7 +128,7 @@ public class VoteReward extends JavaPlugin {
         Player targetPlayer = Bukkit.getServer().getPlayerExact(targetPlayerName);
 
         if (targetPlayer == null) {
-            status = "Player '" + targetPlayer + "' is offline, rewarding skipped";
+            status = "Player '" + targetPlayerName + "' is offline, rewarding skipped";
         } else {
             //Player online
             PermissionUser pexUser = PermissionsEx.getUser(targetPlayer.getName());
