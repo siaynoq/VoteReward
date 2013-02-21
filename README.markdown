@@ -1,4 +1,4 @@
-# VoteReward v0.4.0
+# VoteReward v0.4.1
 
  VoteReward is a plugin for Bukkit Minecraft Servers.
  It rewards selected members of the community who vote on any of the servers which supports [Votifier](https://github.com/vexsoftware/votifier).
@@ -42,7 +42,7 @@ VoteReward was tested and compiled with:
         - normal:
             - always: Green Gold
               type: item
-              data_value: 364
+              data_value: EMERALD
               amount: 5-10
             - name: A wooden axe
               chance: 50
@@ -96,7 +96,7 @@ VoteReward was tested and compiled with:
  Current "types" of rewards:
 
  - item: an ingame item
-     - 'data_value' is the ingame decimal value for the item. You can give "subitem value" with a semicolon (;). Example: <code>data_value: 35;12</code> is brown wool
+     - 'data_value' is the ingame decimal value or the Bukkit uppercase material name for the item. You can give "subitem value" with a semicolon (;). Example: <code>data_value: 35;12</code> is brown wool. This is the same: <code>data_value: WOOL;12</code>
      - 'amount' is a fix number or an interval of points which will be given. '1' if not defined.
  - xp: experience points
      - 'amount' is a fix number or an interval of points which will be given. '1' if not defined.
@@ -121,6 +121,11 @@ VoteReward was tested and compiled with:
  Reloads <code>VoteReward/config.yml</code> file to memory.
 
 # Release history
+
+ - 0.4.1 - 2102/2013 (Beta)
+      - added feature: Bukkit material name (e.g. GRASS) can be used as data_value
+      - bugfix:
+          - "Issue 1" fixed: player name is displayed in logs when offline
 
  - 0.4.0 - still beta - 30/01/2013
       - added feature:
